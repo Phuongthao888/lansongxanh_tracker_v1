@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theo dõi Làn Sóng Xanh - NỮ CA SĨ/RAPPER ĐƯỢC YÊU THÍCH NHẤT - VÒNG 1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #00D77B;
+            --secondary-color: #1a1a2e;
+            --accent-color: #16213e;
+            --text-color: #ffffff;
+            --card-bg: rgba(26, 26, 46, 0.95);
+            --money-color: #FFD700;
+            --increase-color: #00D77B;
+            --decrease-color: #FF6B6B;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-attachment: fixed;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--primary-color);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, var(--primary-color), #00b36b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 215, 123, 0.3);
+        }
+
+        .card-candidate {
+            background: var(--card-bg);
+            border: 2px solid rgba(0, 215, 123, 0.2);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .card-candidate:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0, 215, 123, 0.25);
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, var(--primary-color), #00b36b);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .rank-1 .rank-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            animation: pulse-gold 2s infinite;
+        }
+
+        .rank-2 .rank-badge {
+            background: linear-gradient(135deg, #C0C0C0, #909090);
+        }
+
+        .rank-3 .rank-badge {
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+        }
+
+        @keyframes pulse-gold {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+
+        .candidate-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .score-display {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0, 215, 123, 0.3);
+        }
+
+        .money-display {
+            color: var(--money-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.3rem 0.8rem;
+            margin-top: 0.3rem;
+            display: inline-block;
+        }
+
+        .difference-badge {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .difference-positive {
+            background-color: rgba(0, 215, 123, 0.2);
+            color: var(--increase-color);
+            border: 1px solid rgba(0, 215, 123, 0.3);
+        }
+
+        .difference-negative {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--decrease-color);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .difference-neutral {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.8rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-color), #00ff95);
+            box-shadow: 0 2px 8px rgba(0, 215, 123, 0.4);
+        }
+
+        .last-update {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .update-info {
+            background: rgba(0, 215, 123, 0.15);
+            border: 1px solid rgba(0, 215, 123, 0.3);
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, var(--primary-color), #00b36b);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 215, 123, 0.3);
+            color: white;
+        }
+
+        .update-btn:hover {
+            background: linear-gradient(135deg, #00b36b, #008c4d);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 215, 123, 0.4);
+            color: white;
+        }
+
+        .stats-card {
+            background: rgba(22, 33, 62, 0.9);
+            border-radius: 15px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.2rem;
+        }
+
+        .money-number {
+            color: var(--money-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .difference-display {
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .auto-update-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-color), #00b36b);
+            color: white;
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown {
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .percentage-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+
+        .time-updated {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        .update-summary {
+            background: rgba(0, 215, 123, 0.1);
+            border: 1px solid rgba(0, 215, 123, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .trend-icon {
+            margin-right: 3px;
+            font-size: 0.8rem;
+        }
+
+        .candidate-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .candidate-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .candidate-info {
+            flex: 1;
+            min-width: 0;
+            /* Important for text truncation */
+        }
+
+        .candidate-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Card chênh lệch tiền */
+        .gap-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            height: 100%;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gap-item {
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gap-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .gap-rank {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .gap-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .gap-amount {
+            font-weight: bold;
+            color: var(--money-color);
+            font-size: 1rem;
+        }
+
+        .gap-percentage {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-left: 0.5rem;
+        }
+
+        .gap-votes {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            margin-top: 0.2rem;
+        }
+
+        .gap-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+
+        .gap-badge-danger {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--decrease-color);
+        }
+
+        .gap-badge-success {
+            background: rgba(0, 215, 123, 0.2);
+            color: var(--increase-color);
+        }
+
+        @media (max-width: 768px) {
+            .card-candidate {
+                margin-bottom: 1rem;
+            }
+
+            .rank-badge {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .candidate-name {
+                font-size: 1rem;
+            }
+
+            .score-display,
+            .money-display {
+                font-size: 0.95rem;
+            }
+
+            .stats-number {
+                font-size: 1.8rem;
+            }
+
+            .money-number {
+                font-size: 1.5rem;
+            }
+
+            .auto-update-badge {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                text-align: center;
+            }
+
+            .candidate-photo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .gap-card {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Animation for rank change */
+        .rank-change {
+            animation: rankChange 0.5s ease;
+        }
+
+        @keyframes rankChange {
+            0% {
+                background-color: rgba(0, 215, 123, 0);
+            }
+
+            50% {
+                background-color: rgba(0, 215, 123, 0.2);
+            }
+
+            100% {
+                background-color: rgba(0, 215, 123, 0);
+            }
+        }
+
+        /* Custom scrollbar */
+        .gap-scroll-container {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .gap-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .gap-scroll-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .gap-scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 215, 123, 0.3);
+            border-radius: 3px;
+        }
+
+        .gap-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 215, 123, 0.5);
+        }
+
+        /* Summary items */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            padding: 0.2rem 0;
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+
+
+        /* Thêm CSS mới cho biểu đồ chênh lệch */
+        .chart-controls {
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-control-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+
+        .line-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .line-selector-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #aaa;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .line-selector-btn:hover {
+            background: rgba(0, 215, 123, 0.2);
+            color: white;
+        }
+
+        .line-selector-btn.active {
+            background: rgba(0, 215, 123, 0.4);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 5px;
+        }
+
+        .large-chart-container {
+            height: 400px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-7">
+                    <h1 class="mb-2"><i class="fas fa-chart-line me-2"></i>Theo dõi Làn Sóng Xanh</h1>
+                    <div class="category-badge">
+                        <i class="fas fa-trophy me-2"></i>
+                        <span id="categoryName">NỮ CA SĨ/RAPPER ĐƯỢC YÊU THÍCH NHẤT - VÒNG 1</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5 text-md-end">
+                    <div class="d-flex flex-column align-items-md-end">
+                        <div class="update-info mb-2">
+                            <i class="fas fa-sync-alt me-1"></i>
+                            Tự động cập nhật: <span id="updateInterval">10</span> giây
+                        </div>
+                        <div class="last-update mb-2">
+                            <i class="far fa-clock me-1"></i>
+                            Cập nhật lần cuối: <span id="lastUpdate">Đang tải...</span>
+                        </div>
+                        <button class="update-btn" onclick="manualUpdate()">
+                            <i class="fas fa-sync-alt me-2"></i>Cập nhật ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Thống kê tổng quan -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <h6><i class="fas fa-users me-2"></i>Tổng nghệ sĩ</h6>
+                    <div class="stats-number" id="totalCandidates">0</div>
+                    <small class="text-muted">40 nghệ sĩ</small>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <h6><i class="fas fa-star me-2"></i>Tổng điểm</h6>
+                    <div class="stats-number" id="totalScoreSum">0</div>
+                    <div class="difference-display" id="totalScoreDifference">+0 điểm</div>
+                    <div class="money-number" id="totalMoney">0 đ</div>
+                    <div class="difference-display" id="totalMoneyDifference">+0 đ</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <h6><i class="fas fa-crown me-2"></i>Hạng 1</h6>
+                    <div class="stats-number" id="topCandidate">-</div>
+                    <small class="text-muted" id="topScore">0 điểm</small>
+                    <div class="money-number" id="topMoney">0 đ</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <h6><i class="fas fa-server me-2"></i>Thời gian</h6>
+                    <div class="stats-number" id="timeSinceUpdate">-</div>
+                    <small class="text-muted"><span id="updatingStatus">Đang khởi động...</span></small>
+                    <div class="mt-2">
+                        <small class="text-muted">Lần cập nhật trước:</small><br>
+                        <small id="previousUpdateTime">Chưa có</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biểu đồ thống kê - 2 biểu đồ đầu hàng ngang -->
+        <div class="row mb-4">
+            <div class="col-lg-6 mb-3">
+                <div class="chart-container">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-pie me-2"></i>Phân bố TOP 10
+                    </div>
+                    <div style="height: 300px;">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+                <div class="chart-container">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-bar me-2"></i>Tăng trưởng tổng điểm (24h)
+                    </div>
+                    <div style="height: 300px;">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biểu đồ chênh lệch - RIÊNG MỘT DÒNG -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-line me-2"></i>Biểu đồ chênh lệch điểm theo thời gian
+                        <small class="text-muted ms-2">(Hiển thị chênh lệch so với điểm dữ liệu đầu tiên)</small>
+                    </div>
+                    <div class="chart-controls">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="chart-control-label">Hiển thị top nghệ sĩ:</div>
+                                <div class="line-selector" id="lineSelector">
+                                    <button class="line-selector-btn active" data-lines="5">Top 5</button>
+                                    <button class="line-selector-btn" data-lines="10">Top 10</button>
+                                    <button class="line-selector-btn" data-lines="15">Top 15</button>
+                                    <button class="line-selector-btn" data-lines="20">Top 20</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="chart-control-label">Số điểm dữ liệu hiển thị:</div>
+                                <div class="line-selector" id="timeRangeSelector">
+                                    <button class="line-selector-btn" data-range="10">10 điểm</button>
+                                    <button class="line-selector-btn" data-range="15">15 điểm</button>
+                                    <button class="line-selector-btn active" data-range="25">25 điểm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 400px;" class="large-chart-container">
+                        <canvas id="differenceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card chênh lệch tiền và vote -->
+        <div class="row mb-4">
+            <div class="col-12 mb-3">
+                <div class="gap-card">
+                    <div class="chart-title mb-3">
+                        CHÊNH LỆCH TIỀN & VOTE: Hạng 1 vs các hạng khác
+                        <small class="text-muted ms-2">(3.000 VNĐ = 1 vote • 10 điểm = 1 vote)</small>
+                    </div>
+                    <div class="gap-scroll-container" id="moneyGapContainer">
+                        <!-- Dữ liệu sẽ được thêm ở đây -->
+                        <div class="text-center py-3">
+                            <div class="spinner" style="width: 30px; height: 30px;"></div>
+                            <p class="mt-2">Đang tải dữ liệu...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thanh tìm kiếm và bộ lọc -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-white border-primary">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control bg-dark text-white border-primary"
+                        placeholder="Tìm kiếm nghệ sĩ..." onkeyup="filterCandidates()">
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="d-flex justify-content-md-end">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active" onclick="changeView('grid')">
+                            <i class="fas fa-th-large me-2"></i>Lưới
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" onclick="changeView('list')">
+                            <i class="fas fa-list me-2"></i>Danh sách
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danh sách thí sinh (Grid 3 cột) -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4"><i class="fas fa-list-ol me-2"></i>Bảng xếp hạng theo Tổng điểm</h3>
+
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Đang tải dữ liệu từ server...</p>
+                    <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                </div>
+
+                <div id="candidatesGrid" class="row" style="display: none;">
+                    <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                </div>
+
+                <div id="candidatesList" class="row" style="display: none;">
+                    <!-- Dữ liệu danh sách sẽ được thêm vào đây -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông tin footer -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="text-center text-muted small">
+                    <p><i class="fas fa-info-circle me-1"></i>Được tạo bởi cz.it.1</p>
+                    <p><i class="far fa-copyright me-1"></i> 2024 Làn Sóng Xanh Tracker</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badge đếm ngược tự động cập nhật -->
+    <div class="auto-update-badge" id="autoUpdateBadge">
+        <i class="fas fa-history me-1"></i>
+        Cập nhật sau: <span class="countdown" id="countdown">10</span>s
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Biến toàn cục
+        let maxScore = 0;
+        let updateCountdown = 10;
+        let countdownInterval;
+        let previousData = {
+            totalScoreSum: 0,
+            totalMoney: 0,
+            updateTime: null,
+            candidates: []
+        };
+        let lastUpdateTime = null;
+        let currentView = 'grid';
+        let pieChart = null;
+        let lineChart = null;
+        let differenceChart = null;
+        
+        // Biến mới cho lịch sử dữ liệu
+        let scoreHistory = []; // Lưu lịch sử điểm của các thí sinh
+        let updateTimes = []; // Lưu thời gian cập nhật
+        let displayedLines = 5; // Số dòng hiển thị mặc định
+        let dataPointsRange = 25; // Số điểm dữ liệu hiển thị mặc định
+        let candidateColors = {}; // Lưu màu sắc cho từng thí sinh
+        let candidateHistory = {}; // Lưu lịch sử từng thí sinh để tính tốc độ
+        let candidateLastUpdate = {}; // Lưu thời gian cập nhật gần nhất của từng thí sinh
+        let differenceChartUpdateInterval; // Interval cho biểu đồ thứ 3
+
+        // Màu sắc cho biểu đồ (tối đa 40 màu)
+        const colorPalette = [
+            '#FFD700', '#C0C0C0', '#CD7F32', '#00D77B', '#1E90FF',
+            '#FF6B6B', '#9B59B6', '#3498DB', '#2ECC71', '#E74C3C',
+            '#F39C12', '#8E44AD', '#16A085', '#27AE60', '#2980B9',
+            '#D35400', '#C0392B', '#7F8C8D', '#2C3E50', '#34495E',
+            '#9B59B6', '#1ABC9C', '#2ECC71', '#3498DB', '#9B59B6',
+            '#E74C3C', '#F1C40F', '#95A5A6', '#7F8C8D', '#BDC3C7',
+            '#8E44AD', '#16A085', '#2ECC71', '#3498DB', '#E67E22',
+            '#C0392B', '#7F8C8D', '#2C3E50', '#34495E', '#1ABC9C'
+        ];
+
+        fetch("https://stoutly-siest-janett.ngrok-free.dev/api/data")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("output").textContent =
+                JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                document.getElementById("output").textContent =
+                "Lỗi: " + err;
+            });
+
+        // Hàm định dạng số với dấu phân cách triệu
+        function formatNumber(num) {
+            if (num === undefined || num === null) return '0';
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Hàm định dạng tiền VNĐ (triệu đồng)
+        function formatMoney(vnd) {
+            if (vnd >= 1000000000) {
+                return (vnd / 1000000000).toFixed(3).replace('.', ',') + ' tỷ';
+            } else if (vnd >= 1000000) {
+                return (vnd / 1000000).toFixed(3).replace('.', ',') + ' triệu';
+            } else if (vnd >= 1000) {
+                return (vnd / 1000).toFixed(0) + ' nghìn';
+            }
+            return formatNumber(vnd);
+        }
+
+        // Hàm tính tiền từ điểm (10 điểm = 3.000 VNĐ)
+        function calculateMoney(score) {
+            return Math.floor((score * 3000) / 10);
+        }
+
+        // Hàm tính vote từ điểm (10 điểm = 1 vote)
+        function calculateVotes(score) {
+            return Math.floor(score / 10);
+        }
+
+        // Hàm tính vote từ tiền chênh lệch (3000 VNĐ = 1 vote)
+        function calculateVotesFromMoney(moneyGap) {
+            return Math.floor(moneyGap / 3000);
+        }
+
+        // Hàm tính vote từ điểm chênh lệch (10 điểm = 1 vote)
+        function calculateVotesFromScore(scoreGap) {
+            return Math.floor(scoreGap / 10);
+        }
+
+        // Hàm tính tốc độ vote/phút
+        function calculateVoteRate(scoreDiff, timeDiffMs) {
+            if (!timeDiffMs || timeDiffMs === 0) return 0;
+            
+            const timeDiffMinutes = timeDiffMs / (1000 * 60); // Chuyển sang phút
+            const voteDiff = calculateVotesFromScore(scoreDiff);
+            
+            return timeDiffMinutes > 0 ? voteDiff / timeDiffMinutes : 0;
+        }
+
+        // Hàm định dạng thời gian - FIX LỖI INVALID DATE
+        function formatTimeAgo(timestamp) {
+            if (!timestamp) return 'Vừa xong';
+            
+            let date;
+            try {
+                if (typeof timestamp === 'string') {
+                    date = new Date(timestamp);
+                    if (isNaN(date.getTime())) {
+                        return 'Vừa xong';
+                    }
+                } else if (timestamp instanceof Date) {
+                    date = timestamp;
+                } else {
+                    return 'Vừa xong';
+                }
+            } catch (e) {
+                return 'Vừa xong';
+            }
+
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+
+            if (diffMin < 1) {
+                return `${diffSec} giây trước`;
+            } else if (diffMin < 60) {
+                return `${diffMin} phút trước`;
+            } else {
+                const diffHour = Math.floor(diffMin / 60);
+                if (diffHour < 24) {
+                    return `${diffHour} giờ trước`;
+                } else {
+                    const diffDay = Math.floor(diffHour / 24);
+                    return `${diffDay} ngày trước`;
+                }
+            }
+        }
+
+        // Hàm định dạng thời gian ngắn HH:MM:SS
+        function formatShortTime(timestamp) {
+            if (!timestamp) return '--:--:--';
+            
+            let date;
+            try {
+                if (typeof timestamp === 'string') {
+                    date = new Date(timestamp);
+                    if (isNaN(date.getTime())) {
+                        return '--:--:--';
+                    }
+                } else if (timestamp instanceof Date) {
+                    date = timestamp;
+                } else {
+                    return '--:--:--';
+                }
+                
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const seconds = date.getSeconds().toString().padStart(2, '0');
+                
+                return `${hours}:${minutes}:${seconds}`;
+            } catch (e) {
+                return '--:--:--';
+            }
+        }
+
+        // Hàm định dạng thời gian cho biểu đồ HH:MM:SS (ĐÃ THÊM GIÂY)
+        function formatChartTime(timestamp) {
+            if (!timestamp) return '';
+            
+            let date;
+            try {
+                if (typeof timestamp === 'string') {
+                    date = new Date(timestamp);
+                    if (isNaN(date.getTime())) {
+                        return '';
+                    }
+                } else if (timestamp instanceof Date) {
+                    date = timestamp;
+                } else {
+                    return '';
+                }
+                
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const seconds = date.getSeconds().toString().padStart(2, '0');
+                
+                return `${hours}:${minutes}:${seconds}`;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Hàm định dạng khoảng thời gian - FIX LỖI INVALID DATE
+        function formatTimeGap(startTime, endTime) {
+            if (!startTime || !endTime) return 'Không xác định';
+
+            let start, end;
+            try {
+                start = new Date(startTime);
+                end = new Date(endTime);
+                
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    return 'Không xác định';
+                }
+            } catch (e) {
+                return 'Không xác định';
+            }
+
+            const diffMs = end - start;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+
+            if (diffMin < 1) {
+                return `${diffSec} giây`;
+            } else {
+                const remainingSec = diffSec % 60;
+                return `${diffMin} phút ${remainingSec} giây`;
+            }
+        }
+
+        // Hàm hiển thị chênh lệch - CHỈ HIỂN THỊ KHI CÓ THAY ĐỔI
+        function formatDifferenceDisplay(current, previous, isMoney = false) {
+            if (previous === 0 || current === previous) return '<span class="no-change">Không thay đổi</span>';
+
+            const difference = current - previous;
+            const absDiff = Math.abs(difference);
+            const formattedDiff = isMoney ? formatMoney(absDiff) : formatNumber(absDiff);
+            const sign = difference > 0 ? '+' : '-';
+            const unit = isMoney ? 'đ' : 'điểm';
+
+            const className = difference > 0 ? 'positive-change' :
+                difference < 0 ? 'negative-change' : 'neutral-change';
+
+            return `<span class="${className}">${sign}${formattedDiff} ${unit}</span>`;
+        }
+
+        // Hàm bắt đầu đếm ngược
+        function startCountdown() {
+            clearInterval(countdownInterval);
+            updateCountdown = 10;
+            document.getElementById('countdown').textContent = updateCountdown;
+
+            countdownInterval = setInterval(() => {
+                updateCountdown--;
+                document.getElementById('countdown').textContent = updateCountdown;
+
+                if (updateCountdown <= 0) {
+                    updateCountdown = 10;
+                    fetchData(); // Tự động cập nhật khi đếm ngược kết thúc
+                }
+            }, 1000);
+        }
+
+        // Hàm lấy dữ liệu từ API - FIX LỖI THỜI GIAN
+        async function fetchData() {
+            try {
+                console.log('Đang lấy dữ liệu từ API...');
+                const response = await fetch('/api/candidates');
+                const data = await response.json();
+
+                console.log('Dữ liệu nhận được:', data);
+
+                // Tạo thời gian hiện tại nếu API không trả về
+                const currentTime = new Date();
+                let updateTime;
+                
+                // Xử lý thời gian cập nhật từ API
+                if (data.last_update) {
+                    try {
+                        updateTime = new Date(data.last_update);
+                        if (isNaN(updateTime.getTime())) {
+                            updateTime = currentTime;
+                        }
+                    } catch (e) {
+                        updateTime = currentTime;
+                    }
+                } else {
+                    updateTime = currentTime;
+                }
+                
+                lastUpdateTime = updateTime;
+
+                // Cập nhật thông tin tổng quan
+                document.getElementById('totalCandidates').textContent = data.total_candidates || 0;
+
+                const totalScore = data.total_score_sum || 0;
+                const totalMoney = calculateMoney(totalScore);
+
+                // Hiển thị tổng điểm với chênh lệch
+                document.getElementById('totalScoreSum').textContent = formatNumber(totalScore);
+                const scoreDiff = formatDifferenceDisplay(totalScore, previousData.totalScoreSum, false);
+                document.getElementById('totalScoreDifference').innerHTML = scoreDiff;
+
+                // Hiển thị tổng tiền với chênh lệch
+                document.getElementById('totalMoney').textContent = formatMoney(totalMoney) + ' VND';
+                const moneyDiff = formatDifferenceDisplay(totalMoney, previousData.totalMoney, true);
+                document.getElementById('totalMoneyDifference').innerHTML = moneyDiff;
+
+                // Hiển thị thời gian cập nhật
+                document.getElementById('lastUpdate').textContent = formatShortTime(updateTime);
+                
+                document.getElementById('updateInterval').textContent = data.update_interval || 10;
+                document.getElementById('timeSinceUpdate').textContent = formatTimeAgo(updateTime);
+
+                if (previousData.updateTime) {
+                    document.getElementById('previousUpdateTime').textContent =
+                        formatTimeAgo(previousData.updateTime);
+                }
+
+                // Hiển thị thông tin hạng 1
+                if (data.candidates && data.candidates.length > 0) {
+                    const topCandidate = data.candidates[0];
+                    const topName = topCandidate.name || 'Chưa có';
+                    const topScore = topCandidate.total_score || 0;
+                    const topMoney = calculateMoney(topScore);
+
+                    document.getElementById('topCandidate').textContent =
+                        topName.length > 15 ? topName.substring(0, 15) + '...' : topName;
+                    document.getElementById('topScore').textContent = formatNumber(topScore) + ' điểm';
+                    document.getElementById('topMoney').textContent = formatMoney(topMoney) + ' VND';
+
+                    maxScore = Math.max(...data.candidates.map(c => c.total_score || 0));
+
+                    // Cập nhật lịch sử dữ liệu
+                    updateScoreHistory(data.candidates, updateTime);
+
+                    // Cập nhật lịch sử từng thí sinh
+                    updateCandidateHistory(data.candidates, updateTime);
+
+                    // Vẽ biểu đồ
+                    updateCharts(data.candidates);
+
+                    // Hiển thị chênh lệch tiền và vote
+                    displayMoneyGaps(data.candidates);
+
+                    // Hiển thị danh sách thí sinh
+                    displayCandidates(data.candidates);
+                } else {
+                    document.getElementById('candidatesGrid').innerHTML =
+                        '<div class="col-12"><div class="alert alert-info">Chưa có dữ liệu</div></div>';
+                }
+
+                // Cập nhật trạng thái
+                checkSystemStatus();
+
+                // Lưu dữ liệu hiện tại để so sánh lần sau
+                previousData = {
+                    totalScoreSum: totalScore,
+                    totalMoney: totalMoney,
+                    updateTime: updateTime,
+                    candidates: data.candidates || []
+                };
+
+                // Ẩn loading, hiển thị danh sách
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('candidatesGrid').style.display = 'flex';
+
+                // Khởi động lại đếm ngược
+                startCountdown();
+
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu:', error);
+                document.getElementById('loading').innerHTML =
+                    '<div class="alert alert-danger">Không thể kết nối đến server. Vui lòng thử lại sau.</div>';
+            }
+        }
+
+        // Hàm cập nhật lịch sử điểm - FIX LỖI THỜI GIAN
+        function updateScoreHistory(candidates, updateTime) {
+            // Tạo bản ghi hiện tại
+            const currentRecord = {
+                time: updateTime,
+                scores: {}
+            };
+
+            // Lưu điểm của từng thí sinh
+            candidates.forEach(candidate => {
+                const name = candidate.name || 'Unknown';
+                const score = candidate.total_score || 0;
+                currentRecord.scores[name] = score;
+                
+                // Gán màu sắc nếu chưa có
+                if (!candidateColors[name]) {
+                    const index = Object.keys(candidateColors).length;
+                    candidateColors[name] = colorPalette[index % colorPalette.length];
+                }
+                
+                // Cập nhật thời gian cập nhật gần nhất của thí sinh
+                candidateLastUpdate[name] = updateTime;
+            });
+
+            // Thêm vào lịch sử
+            scoreHistory.push(currentRecord);
+            updateTimes.push(updateTime);
+
+            // Giới hạn số bản ghi (tối đa 50)
+            if (scoreHistory.length > 50) {
+                scoreHistory.shift();
+                updateTimes.shift();
+            }
+        }
+
+        // Hàm cập nhật lịch sử từng thí sinh (để tính tốc độ)
+        function updateCandidateHistory(candidates, updateTime) {
+            candidates.forEach(candidate => {
+                const name = candidate.name || 'Unknown';
+                const score = candidate.total_score || 0;
+                
+                if (!candidateHistory[name]) {
+                    candidateHistory[name] = [];
+                }
+                
+                // Thêm bản ghi mới
+                candidateHistory[name].push({
+                    time: updateTime,
+                    score: score
+                });
+                
+                // Giới hạn lịch sử (tối đa 10 bản ghi)
+                if (candidateHistory[name].length > 10) {
+                    candidateHistory[name].shift();
+                }
+            });
+        }
+
+        // Hàm cập nhật biểu đồ
+        function updateCharts(candidates) {
+            // Biểu đồ tròn - Phân bố TOP 10
+            updatePieChart(candidates.slice(0, 10));
+
+            // Biểu đồ đường - Tăng trưởng
+            updateLineChart();
+
+            // Biểu đồ chênh lệch - ĐÃ SỬA: Hiển thị chênh lệch so với lần đầu
+            updateDifferenceChart();
+        }
+
+        function updatePieChart(topCandidates) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+
+            // Dữ liệu cho biểu đồ
+            const labels = topCandidates.map(c => c.name.length > 10 ? c.name.substring(0, 10) + '...' : c.name);
+            const scores = topCandidates.map(c => c.total_score || 0);
+            const total = scores.reduce((a, b) => a + b, 0);
+            const percentages = scores.map(score => ((score / total) * 100).toFixed(1));
+
+            // Màu sắc cho biểu đồ
+            const colors = [
+                '#FFD700', '#C0C0C0', '#CD7F32', '#00D77B', '#1E90FF',
+                '#FF6B6B', '#9B59B6', '#3498DB', '#2ECC71', '#E74C3C'
+            ];
+
+            // Xóa biểu đồ cũ nếu có
+            if (pieChart) {
+                pieChart.destroy();
+            }
+
+            // Tạo biểu đồ mới
+            pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: percentages,
+                        backgroundColor: colors,
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const candidate = topCandidates[context.dataIndex];
+                                    const score = candidate.total_score || 0;
+                                    const money = calculateMoney(score);
+                                    return `${label}: ${value}% (${formatNumber(score)} điểm - ${formatMoney(money)} VND)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateLineChart() {
+            const ctx = document.getElementById('lineChart').getContext('2d');
+
+            // Dữ liệu mẫu cho 24h (giả lập)
+            const labels = [];
+            const dataPoints = [];
+            const now = new Date();
+
+            // Tạo dữ liệu cho 24 giờ qua
+            for (let i = 23; i >= 0; i--) {
+                const hour = new Date(now);
+                hour.setHours(now.getHours() - i);
+                labels.push(hour.getHours() + ':00');
+
+                // Giả lập dữ liệu tăng dần
+                const baseScore = previousData.totalScoreSum || 1000000;
+                const growth = baseScore * (0.8 + Math.random() * 0.4); // Biến động 80-120%
+                dataPoints.push(Math.floor(growth));
+            }
+
+            // Xóa biểu đồ cũ nếu có
+            if (lineChart) {
+                lineChart.destroy();
+            }
+
+            // Tạo biểu đồ mới
+            lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Tổng điểm',
+                        data: dataPoints,
+                        borderColor: '#00D77B',
+                        backgroundColor: 'rgba(0, 215, 123, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#00D77B',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const score = context.parsed.y;
+                                    const money = calculateMoney(score);
+                                    return `Tổng điểm: ${formatNumber(score)} (${formatMoney(money)} VND)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#aaa',
+                                callback: function (value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#aaa',
+                                maxRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Hàm cập nhật biểu đồ chênh lệch - ĐÃ SỬA: Trục X là thời gian thực tế HH:MM:SS
+        function updateDifferenceChart() {
+            const ctx = document.getElementById('differenceChart').getContext('2d');
+
+            // Lấy dữ liệu hiện tại
+            const currentCandidates = previousData.candidates || [];
+            if (currentCandidates.length === 0 || scoreHistory.length < 2) {
+                return;
+            }
+
+            // Sắp xếp thí sinh theo điểm cao nhất
+            const topCandidates = currentCandidates
+                .sort((a, b) => (b.total_score || 0) - (a.total_score || 0))
+                .slice(0, displayedLines);
+
+            // Chuẩn bị dữ liệu cho biểu đồ
+            const datasets = [];
+            const labels = [];
+
+            // Lấy số điểm dữ liệu cần hiển thị
+            const displayDataPoints = Math.min(dataPointsRange, scoreHistory.length);
+            const startIndex = Math.max(0, scoreHistory.length - displayDataPoints);
+
+            // Tạo labels từ thời gian thực tế HH:MM:SS
+            for (let i = startIndex; i < scoreHistory.length; i++) {
+                const time = scoreHistory[i].time;
+                try {
+                    const date = new Date(time);
+                    if (!isNaN(date.getTime())) {
+                        // Hiển thị thời gian thực tế: HH:MM:SS
+                        labels.push(formatChartTime(time));
+                    } else {
+                        labels.push(`Lần ${i - startIndex + 1}`);
+                    }
+                } catch (e) {
+                    labels.push(`Lần ${i - startIndex + 1}`);
+                }
+            }
+
+            // Tạo dataset cho từng thí sinh trong top
+            topCandidates.forEach((candidate, index) => {
+                const candidateName = candidate.name;
+                const data = [];
+                const baseScores = []; // Lưu điểm gốc để tính chênh lệch
+
+                // Lấy điểm của thí sinh qua từng thời điểm
+                for (let i = startIndex; i < scoreHistory.length; i++) {
+                    const score = scoreHistory[i].scores[candidateName] || 0;
+                    baseScores.push(score);
+                }
+
+                // Tính chênh lệch so với điểm đầu tiên
+                if (baseScores.length > 0) {
+                    const firstScore = baseScores[0];
+                    for (let i = 0; i < baseScores.length; i++) {
+                        // Chênh lệch so với điểm đầu tiên
+                        const diff = baseScores[i] - firstScore;
+                        data.push(diff);
+                    }
+                }
+
+                datasets.push({
+                    label: candidateName.length > 15 ? candidateName.substring(0, 15) + '...' : candidateName,
+                    data: data,
+                    borderColor: candidateColors[candidateName] || colorPalette[index % colorPalette.length],
+                    backgroundColor: candidateColors[candidateName] ? 
+                        candidateColors[candidateName] + '20' : colorPalette[index % colorPalette.length] + '20',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                });
+            });
+
+            // Xóa biểu đồ cũ nếu có
+            if (differenceChart) {
+                differenceChart.destroy();
+            }
+
+            // Tạo biểu đồ mới
+            differenceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    size: 11
+                                },
+                                boxWidth: 12,
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    const moneyDiff = calculateMoney(value);
+                                    const votesDiff = calculateVotesFromScore(value);
+                                    const sign = value >= 0 ? '+' : '';
+                                    return `${label}: ${sign}${formatNumber(value)} điểm (${sign}${formatMoney(moneyDiff)} VND, ${sign}${formatNumber(votesDiff)} vote)`;
+                                },
+                                afterLabel: function (context) {
+                                    // Hiển thị thêm thông tin về tốc độ
+                                    const dataIndex = context.dataIndex;
+                                    if (dataIndex > 0 && scoreHistory.length > startIndex + dataIndex) {
+                                        const currentTime = scoreHistory[startIndex + dataIndex].time;
+                                        const prevTime = scoreHistory[startIndex + dataIndex - 1].time;
+                                        const timeDiff = new Date(currentTime) - new Date(prevTime);
+                                        const minutes = timeDiff / (1000 * 60);
+                                        
+                                        if (minutes > 0) {
+                                            const value = context.parsed.y;
+                                            const prevValue = datasets[context.datasetIndex].data[dataIndex - 1];
+                                            const diff = value - prevValue;
+                                            const voteRate = calculateVoteRate(diff, timeDiff);
+                                            return `Tốc độ: ${voteRate.toFixed(1)} vote/phút`;
+                                        }
+                                    }
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#aaa',
+                                callback: function (value) {
+                                    const sign = value >= 0 ? '+' : '';
+                                    return `${sign}${formatNumber(value)}`;
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Chênh lệch điểm (so với lần đầu)',
+                                color: '#aaa',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#aaa',
+                                maxRotation: 45,
+                                // Giảm số lượng ticks hiển thị nếu có nhiều điểm dữ liệu
+                                maxTicksLimit: 15
+                            },
+                            title: {
+                                display: true,
+                                text: 'Thời gian cập nhật',
+                                color: '#aaa',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Hàm hiển thị chênh lệch tiền và vote giữa hạng 1 và các thí sinh khác
+        function displayMoneyGaps(candidates) {
+            const container = document.getElementById('moneyGapContainer');
+
+            if (!candidates || candidates.length < 2) {
+                container.innerHTML = '<div class="text-center py-3">Chưa đủ dữ liệu để hiển thị chênh lệch</div>';
+                return;
+            }
+
+            const top1 = candidates[0];
+            const top1Score = top1.total_score || 0;
+            const top1Money = calculateMoney(top1Score);
+
+            let html = '';
+
+            // Hiển thị thông tin hạng 1
+            html += `
+                <div class="gap-item" style="background: rgba(255, 215, 0, 0.15); border-color: rgba(255, 215, 0, 0.4);">
+                    <div class="d-flex align-items-center">
+                        <div class="gap-rank" style="background: linear-gradient(135deg, #FFD700, #FFA500);">1</div>
+                        <div class="gap-name">
+                            <strong>${top1.name}</strong>
+                            <div class="text-success small">Hạng 1 - Dẫn đầu</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="gap-amount">${formatMoney(top1Money)} VND</div>
+                            <div class="gap-percentage">100%</div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">Điểm: ${formatNumber(top1Score)} | Vote: ${formatNumber(Math.floor(top1Score / 10))}</small>
+                    </div>
+                </div>
+            `;
+
+            // Hiển thị chênh lệch với các thí sinh khác
+            for (let i = 1; i < Math.min(candidates.length, 11); i++) {
+                const candidate = candidates[i];
+                const candidateScore = candidate.total_score || 0;
+                const candidateMoney = calculateMoney(candidateScore);
+
+                // Tính chênh lệch
+                const scoreGap = top1Score - candidateScore;
+                const moneyGap = top1Money - candidateMoney;
+
+                // Tính vote từ chênh lệch tiền (3000 VNĐ = 1 vote)
+                const votesFromMoney = calculateVotesFromMoney(moneyGap);
+
+                // Tính vote từ chênh lệch điểm (10 điểm = 1 vote)
+                const votesFromScore = calculateVotesFromScore(scoreGap);
+
+                const percentageGap = ((candidateScore / top1Score) * 100).toFixed(1);
+
+                // Tính chênh lệch so với lần cập nhật trước
+                let changeBadge = '';
+                if (previousData.candidates && previousData.candidates[i]) {
+                    const prevCandidate = previousData.candidates.find(c => c.name === candidate.name);
+                    if (prevCandidate) {
+                        const prevScore = prevCandidate.total_score || 0;
+                        const prevMoney = calculateMoney(prevScore);
+                        const prevScoreGap = top1Score - prevScore;
+                        const scoreGapChange = scoreGap - prevScoreGap;
+
+                        if (Math.abs(scoreGapChange) > 0) {
+                            const changeType = scoreGapChange > 0 ? 'success' : 'danger';
+                            const changeIcon = scoreGapChange > 0 ? '↗' : '↘';
+                            changeBadge = `<span class="gap-badge gap-badge-${changeType}">${changeIcon} ${formatNumber(Math.abs(scoreGapChange))} điểm</span>`;
+                        }
+                    }
+                }
+
+                html += `
+                    <div class="gap-item">
+                        <div class="d-flex align-items-center">
+                            <div class="gap-rank">${i + 1}</div>
+                            <div class="gap-name">
+                                <strong>${candidate.name}</strong>
+                                <div class="text-muted small">Cách hạng 1</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="gap-amount">-${formatMoney(moneyGap)} VND</div>
+                                <div class="gap-percentage">${percentageGap}% của hạng 1</div>
+                                ${changeBadge}
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted">Điểm chênh lệch: -${formatNumber(scoreGap)}</small>
+                                </div>
+                                <div>
+                                    <small class="gap-votes">
+                                        <i class="fas fa-vote-yea me-1"></i>
+                                        Vote cần để đuổi kịp: <strong>${formatNumber(votesFromScore)}</strong>
+                                        (≈ ${formatNumber(votesFromMoney)} từ tiền)
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="mt-1">
+                                <small class="text-muted">
+                                    <i class="fas fa-calculator me-1"></i>
+                                    Tính toán: ${formatMoney(moneyGap)} VND ÷ 3000 đ/vote = ${formatNumber(votesFromMoney)} vote
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Hàm hiển thị danh sách thí sinh dạng grid 3 cột
+        function displayCandidates(candidates) {
+            const gridContainer = document.getElementById('candidatesGrid');
+            const listContainer = document.getElementById('candidatesList');
+
+            gridContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+
+            candidates.forEach((candidate, index) => {
+                const score = candidate.total_score || 0;
+                const money = calculateMoney(score);
+                const name = candidate.name || 'Không xác định';
+                const rank = candidate.rank || (index + 1);
+                const url = candidate.url || '#';
+                const lastUpdated = candidate.last_updated || 'N/A';
+
+                const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
+                const shortName = name.length > 25 ? name.substring(0, 25) + '...' : name;
+
+                // Lấy avatar từ tên (giả lập)
+                const avatar = candidate.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00D77B&color=fff&size=128`;
+
+                // Kiểm tra xem có thay đổi hạng không
+                let rankChange = '';
+                if (previousData.candidates && previousData.candidates[index]) {
+                    const prevRank = previousData.candidates[index].rank || index + 1;
+                    if (rank < prevRank) {
+                        rankChange = `<span class="badge bg-success ms-2">↑ ${prevRank - rank}</span>`;
+                    } else if (rank > prevRank) {
+                        rankChange = `<span class="badge bg-danger ms-2">↓ ${rank - prevRank}</span>`;
+                    }
+                }
+
+                // HTML cho Grid View (3 cột)
+                const gridHTML = `
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="card-candidate rank-${rank}">
+                            <div class="card-body">
+                                <div class="candidate-header">
+                                    <img src="${avatar}" alt="${name}" class="candidate-photo">
+                                    <div class="candidate-info">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <div class="rank-badge me-2">${rank}</div>
+                                            <h6 class="candidate-name mb-0 flex-grow-1">${shortName}</h6>
+                                            ${rankChange}
+                                        </div>
+                                        <div class="candidate-stats">
+                                            <div class="stat-row">
+                                                <span class="stat-label">Điểm:</span>
+                                                <span class="stat-value text-primary">
+                                                    ${formatNumber(score)}
+                                                </span>
+                                            </div>
+                                            <div class="stat-row">
+                                                <span class="stat-label">Tiền:</span>
+                                                <span class="stat-value text-warning">
+                                                    ${formatMoney(money)} VND
+                                                </span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     style="width: ${percentage}%"
+                                                     aria-valuenow="${percentage}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <div class="stat-row mt-2">
+                                                <small class="stat-label">Tỷ lệ:</small>
+                                                <small class="percentage-badge">${percentage.toFixed(1)}%</small>
+                                            </div>
+                                        </div>
+                                        <div class="time-updated">
+                                            <i class="far fa-clock me-1"></i>Cập nhật: ${lastUpdated}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // HTML cho List View
+                const listHTML = `
+                    <div class="col-12 mb-2">
+                        <div class="card rank-${rank}">
+                            <div class="card-body py-2 bg-black">
+                                <div class="d-flex align-items-center">
+                                    <div class="rank-badge me-3">${rank}</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="candidate-name mb-0">${shortName}</h6>
+                                                <small class="text-muted">${lastUpdated}</small>
+                                            </div>
+                                            <div class="text-end">
+                                                <div class="score-display">${formatNumber(score)} điểm</div>
+                                                <div class="money-display">${formatMoney(money)} VND</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                gridContainer.innerHTML += gridHTML;
+                listContainer.innerHTML += listHTML;
+            });
+
+            // Hiển thị view hiện tại
+            changeView(currentView);
+        }
+
+        // Hàm thay đổi view (grid/list)
+        function changeView(view) {
+            currentView = view;
+
+            const gridContainer = document.getElementById('candidatesGrid');
+            const listContainer = document.getElementById('candidatesList');
+            const gridBtn = document.querySelector('button[onclick="changeView(\'grid\')"]');
+            const listBtn = document.querySelector('button[onclick="changeView(\'list\')"]');
+
+            if (view === 'grid') {
+                gridContainer.style.display = 'flex';
+                listContainer.style.display = 'none';
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                gridContainer.style.display = 'none';
+                listContainer.style.display = 'block';
+                gridBtn.classList.remove('active');
+                listBtn.classList.add('active');
+            }
+        }
+
+        // Hàm lọc thí sinh
+        function filterCandidates() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const candidates = previousData.candidates || [];
+
+            if (searchTerm === '') {
+                displayCandidates(candidates);
+                return;
+            }
+
+            const filtered = candidates.filter(candidate =>
+                candidate.name.toLowerCase().includes(searchTerm)
+            );
+
+            displayCandidates(filtered);
+        }
+
+        // Hàm cập nhật thủ công
+        async function manualUpdate() {
+            const btn = document.querySelector('.update-btn');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang cập nhật...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/update');
+                const data = await response.json();
+
+                // Hiển thị thông báo
+                showNotification(data.message, data.status === 'updating' ? 'success' : 'warning');
+
+                if (data.status === 'updating') {
+                    // Chờ 3 giây rồi tải lại dữ liệu
+                    setTimeout(() => {
+                        fetchData();
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }, 3000);
+                } else {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+
+            } catch (error) {
+                showNotification('Lỗi khi cập nhật dữ liệu', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Hàm hiển thị thông báo
+        function showNotification(message, type) {
+            const alertClass = type === 'success' ? 'alert-success' :
+                type === 'warning' ? 'alert-warning' : 'alert-danger';
+
+            const notification = document.createElement('div');
+            notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = `
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+            `;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Tự động xóa sau 3 giây
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Hàm kiểm tra trạng thái hệ thống
+        async function checkSystemStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+
+                const updatingStatusElement = document.getElementById('updatingStatus');
+
+                if (data.is_updating) {
+                    updatingStatusElement.textContent = 'Đang cập nhật...';
+                    updatingStatusElement.className = 'text-warning';
+                } else {
+                    updatingStatusElement.textContent = 'Đang theo dõi';
+                    updatingStatusElement.className = 'text-success';
+                }
+
+                // Cập nhật category nếu có
+                if (data.category) {
+                    document.getElementById('categoryName').textContent = data.category;
+                }
+
+            } catch (error) {
+                console.error('Lỗi khi kiểm tra trạng thái:', error);
+            }
+        }
+
+        // Hàm xử lý thay đổi số dòng hiển thị
+        function handleLineSelection(lines) {
+            displayedLines = lines;
+            
+            // Cập nhật active state cho các nút
+            document.querySelectorAll('#lineSelector .line-selector-btn').forEach(btn => {
+                if (parseInt(btn.dataset.lines) === lines) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Cập nhật biểu đồ
+            if (previousData.candidates && previousData.candidates.length > 0) {
+                updateDifferenceChart();
+            }
+        }
+
+        // Hàm xử lý thay đổi số điểm dữ liệu
+        function handleTimeRangeSelection(range) {
+            dataPointsRange = range;
+            
+            // Cập nhật active state cho các nút
+            document.querySelectorAll('#timeRangeSelector .line-selector-btn').forEach(btn => {
+                if (parseInt(btn.dataset.range) === range) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Cập nhật biểu đồ
+            if (previousData.candidates && previousData.candidates.length > 0) {
+                updateDifferenceChart();
+            }
+        }
+
+        // Hàm cập nhật biểu đồ thứ 3 mỗi 30 giây
+        function startDifferenceChartUpdate() {
+            // Xóa interval cũ nếu có
+            if (differenceChartUpdateInterval) {
+                clearInterval(differenceChartUpdateInterval);
+            }
+            
+            // Thiết lập interval mới: 30 giây
+            differenceChartUpdateInterval = setInterval(() => {
+                if (previousData.candidates && previousData.candidates.length > 0) {
+                    console.log('Tự động cập nhật biểu đồ chênh lệch...');
+                    updateDifferenceChart();
+                }
+            }, 30000); // 30 giây
+        }
+
+        // Tải dữ liệu ban đầu
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('Trang đã tải xong, bắt đầu lấy dữ liệu...');
+            
+            // Thêm event listeners cho các nút điều khiển biểu đồ
+            document.querySelectorAll('#lineSelector .line-selector-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    handleLineSelection(parseInt(this.dataset.lines));
+                });
+            });
+            
+            document.querySelectorAll('#timeRangeSelector .line-selector-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    handleTimeRangeSelection(parseInt(this.dataset.range));
+                });
+            });
+            
+            // Load dữ liệu ban đầu
+            fetchData();
+            
+            // Bắt đầu tự động cập nhật biểu đồ thứ 3
+            startDifferenceChartUpdate();
+
+            // Tự động cập nhật dữ liệu chính mỗi 10 giây
+            setInterval(() => {
+                fetchData();
+            }, 10000);
+
+            // Kiểm tra trạng thái hệ thống định kỳ
+            setInterval(() => {
+                checkSystemStatus();
+            }, 5000);
+        });
+
+    </script>
+</body>
+
+</html>
